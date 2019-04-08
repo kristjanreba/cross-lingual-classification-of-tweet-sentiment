@@ -1,0 +1,4 @@
+.DS_Store
+data/
+.ipynb_checkpoints/
+twitter_api_keys.txt
