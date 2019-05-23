@@ -1,9 +1,18 @@
+'''
+To run this script we need Twitter API keys.
+The script does the following:
+- Create new folder for tweets
+- Download tweets in batches
+- Create a file for tweets in each language
+'''
+
+
 import pandas as pd
 import tweepy
 import time
 
 
-# You must define your own Twitter api keys
+# You must get your own Twitter api keys
 #CONSUMER_KEY = ''
 #CONSUMER_SECRET = ''
 #OAUTH_TOKEN = ''
