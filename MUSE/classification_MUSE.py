@@ -17,13 +17,13 @@ batch_size = 32
 
 
 def get_X(lang):
-    X = np.fromfile('../data/embedded_dataset_LASER/{}.raw'.format(lang), dtype=np.float32, count=-1)
+    X = np.fromfile('../data/embed/{}.raw'.format(lang), dtype=np.float32, count=-1)
     X.resize(X.shape[0] // dim, dim)
     X = X[1:,:]
     return X
 
 def get_Y(lang):
-    df = pd.read_csv('../data/clean_dataset/labels/{}.csv'.format(lang))
+    df = pd.read_csv('../data/clean/labels/{}.csv'.format(lang))
     y_text = df.values
     y_text = np.ravel(y_text)
     return y_text
@@ -42,7 +42,7 @@ def create_model():
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-def load_data(train_lang, test_lang, use_test_lang):
+def load_data(train_lang, test_lang):
     # create X_train matrix for training languages
     print('Loading X_train.')
     X_train = np.array([])
@@ -53,7 +53,6 @@ def load_data(train_lang, test_lang, use_test_lang):
 
     print('Loading X_test.')
     X_test = get_X(test_lang)
-    len_test = X_test.shape[0]
 
     # create Y matrix that stacks train and test languages
     print('Loading Y_train and Y_test.')
@@ -71,9 +70,7 @@ def load_data(train_lang, test_lang, use_test_lang):
     print(y.shape)
     y = np.concatenate([y, y_text], axis=0)
 
-
-    print('len_train: ', len_train)
-    print('len_test: ', len_test)
+    print(len_train)
     print(y.shape)
 
     # encode class names as integers
@@ -86,12 +83,6 @@ def load_data(train_lang, test_lang, use_test_lang):
 
     # convert integers to one hot encoded
     Y_one_hot = np_utils.to_categorical(encoded_Y, num_classes=3)
-
-    # if we use the test language training option than we have to adjust how the dataset is split
-    if use_test_lang:
-        X_train = np.vstack([X_train, X_test[:len_test//2,:]])
-        X_test = X_test[len_test//2:,:]
-        len_train += len_test // 2
 
     # split encoded labels back to train and test
     Y_train = Y_one_hot[:len_train,:]
@@ -135,7 +126,7 @@ def load_single(lang):
     print('Y_test.shape:', Y_test.shape)
     return X_train, Y_train, X_test, Y_test, encoder_dict
 
-def experiment_single_lang(lang):
+def experiment_single(lang):
     # load data
     X_train, Y_train, X_test, Y_test, encoder_dict = load_single(lang)
 
@@ -143,7 +134,7 @@ def experiment_single_lang(lang):
     model = create_model()
 
     # train Classifier
-    model.fit(X_train, Y_train, epochs=epochs, batch_size=batch_size, verbose=0)
+    model.fit(X_train, Y_train, epochs=epochs, batch_size=batch_size, verbose=1)
 
     # make predictions
     Y_pred = model.predict(X_test)
@@ -158,9 +149,9 @@ def experiment_single_lang(lang):
     print('acc = ', accuracy_score(y_true, y_pred))
     print('-------------------------------------------------------------------')
 
-def experiment(train_lang, test_lang, use_test_lang=False):
+def experiment(train_lang, test_lang):
     # load data
-    X_train, Y_train, X_test, Y_test, encoder_dict = load_data(train_lang, test_lang, use_test_lang)
+    X_train, Y_train, X_test, Y_test, encoder_dict = load_data(train_lang, test_lang)
 
     # create model
     model = create_model()
@@ -182,21 +173,19 @@ def experiment(train_lang, test_lang, use_test_lang=False):
     print('acc = ', accuracy_score(y_true, y_pred))
     print('-------------------------------------------------------------------')
 
+
 if __name__ == "__main__":
 
-    languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
-
-    '''
     # Experiments for single language
-    print("\n\nSINGLE LANGUAGE\n\n")
-    for lang in languages:
-        experiment_single_lang(lang)
+
     '''
-
-
+    languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+    for lang in languages:
+        experiment_single(lang)
+    '''
     '''
     # Experiments for related languages
-    print("\n\nRELATED LANGUAGES\n\n")
+    print('RELATED LANGUAGES')
 
     train_lang = ['German', 'Swedish'] # has to be a list of strings (languages)
     test_lang = 'English' # has to be a signle string
@@ -229,17 +218,15 @@ if __name__ == "__main__":
     train_lang = ['German'] # has to be a list of strings (languages)
     test_lang = 'Swedish' # has to be a signle string
     experiment(train_lang, test_lang)
-    '''
 
 
-    '''
     # Exeperiments for unrelated languages
-    print("\n\nUNRELATED LANGUAGES\n\n")
+    print('UNRELATED LANGUAGES')
 
     train_lang = ['Polish', 'Slovenian'] # has to be a list of strings (languages)
     test_lang = 'English' # has to be a signle string
     experiment(train_lang, test_lang)
-
+    '''
     train_lang = ['German', 'Swedish'] # has to be a list of strings (languages)
     test_lang = 'Russian' # has to be a signle string
     experiment(train_lang, test_lang)
@@ -259,36 +246,3 @@ if __name__ == "__main__":
     train_lang = ['English'] # has to be a list of strings (languages)
     test_lang = 'Slovak' # has to be a signle string
     experiment(train_lang, test_lang)
-    '''
-
-
-
-    # Experiments for many language train set. Also use the test set.
-    print("\n\nMIXED LANGUAGES and sizes\n\n")
-
-    train_lang = ['English', 'Croatian'] # has to be a list of strings (languages)
-    test_lang = 'Slovenian' # has to be a signle string
-    experiment(train_lang, test_lang, use_test_lang=True)
-
-    train_lang = ['English', 'Croatian', 'Serbian', 'Hungarian'] # has to be a list of strings (languages)
-    test_lang = 'Slovak' # has to be a signle string
-    experiment(train_lang, test_lang, use_test_lang=True)
-
-    train_lang = ['English', 'Croatian'] # has to be a list of strings (languages)
-    test_lang = 'Russian' # has to be a signle string
-    experiment(train_lang, test_lang, use_test_lang=True)
-
-    train_lang = ['Russian', 'Swedish'] # has to be a list of strings (languages)
-    test_lang = 'English' # has to be a signle string
-    experiment(train_lang, test_lang, use_test_lang=True)
-
-
-
-    # Experiments to use every language available to train and use the test language also
-    print("\n\nFULL DATASET\n\n")
-
-    for lang in languages:
-        train_lang = languages.copy()
-        train_lang.remove(lang)
-        test_lang = lang
-        experiment(train_lang, test_lang, use_test_lang=True)

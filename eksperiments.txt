@@ -1,0 +1,497 @@
+MIXED LANGUAGES and sizes
+
+
+Loading X_train.
+(171427, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (87427,)
+Shape y_text:  (84000,)
+(112830,)
+(171427,)
+len_train:  171427
+len_test:  112830
+(284257,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (227842, 1024)
+Y_train.shape: (227842, 3)
+X_test.shape: (56415, 1024)
+Y_test.shape: (56415, 3)
+Training on languages:  ['English', 'Croatian']
+Evaluatng on language:  Slovenian
+avg F1 =  0.5760854363591357
+acc =  0.5326243020473278
+-------------------------------------------------------------------
+Loading X_train.
+(300451, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (87427,)
+Shape y_text:  (84000,)
+Shape y_text:  (71720,)
+Shape y_text:  (57304,)
+(58769,)
+(300451,)
+len_train:  300451
+len_test:  58769
+(359220,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (329835, 1024)
+Y_train.shape: (329835, 3)
+X_test.shape: (29385, 1024)
+Y_test.shape: (29385, 3)
+Training on languages:  ['English', 'Croatian', 'Serbian', 'Hungarian']
+Evaluatng on language:  Slovak
+avg F1 =  0.673089949231692
+acc =  0.648698315467075
+-------------------------------------------------------------------
+Loading X_train.
+(171427, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (87427,)
+Shape y_text:  (84000,)
+(93320,)
+(171427,)
+len_train:  171427
+len_test:  93320
+(264747,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (218087, 1024)
+Y_train.shape: (218087, 3)
+X_test.shape: (46660, 1024)
+Y_test.shape: (46660, 3)
+Training on languages:  ['English', 'Croatian']
+Evaluatng on language:  Russian
+avg F1 =  0.6710425553337784
+acc =  0.6531718816973854
+-------------------------------------------------------------------
+Loading X_train.
+(144717, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (93320,)
+Shape y_text:  (51397,)
+(87427,)
+(144717,)
+len_train:  144717
+len_test:  87427
+(232144,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (188430, 1024)
+Y_train.shape: (188430, 3)
+X_test.shape: (43714, 1024)
+Y_test.shape: (43714, 3)
+Training on languages:  ['Russian', 'Swedish']
+Evaluatng on language:  English
+avg F1 =  0.59989600416209
+acc =  0.6171478244955849
+-------------------------------------------------------------------
+
+
+FULL DATASET
+
+
+Loading X_train.
+(1121951, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(38104,)
+(1121951,)
+len_train:  1121951
+len_test:  38104
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1141003, 1024)
+Y_train.shape: (1141003, 3)
+X_test.shape: (19052, 1024)
+Y_test.shape: (19052, 3)
+Training on languages:  ['Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Bosnian
+avg F1 =  0.6378372255927475
+acc =  0.5942158303590174
+-------------------------------------------------------------------
+Loading X_train.
+(1096789, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(63266,)
+(1096789,)
+len_train:  1096789
+len_test:  63266
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1128422, 1024)
+Y_train.shape: (1128422, 3)
+X_test.shape: (31633, 1024)
+Y_test.shape: (31633, 3)
+Training on languages:  ['Bosnian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Bulgarian
+avg F1 =  0.5398508599117054
+acc =  0.5597951506338318
+-------------------------------------------------------------------
+Loading X_train.
+(1076055, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(84000,)
+(1076055,)
+len_train:  1076055
+len_test:  84000
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1118055, 1024)
+Y_train.shape: (1118055, 3)
+X_test.shape: (42000, 1024)
+Y_test.shape: (42000, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Croatian
+avg F1 =  0.6278293020041866
+acc =  0.5658809523809524
+-------------------------------------------------------------------
+Loading X_train.
+(1072628, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(87427,)
+(1072628,)
+len_train:  1072628
+len_test:  87427
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1116341, 1024)
+Y_train.shape: (1116341, 3)
+X_test.shape: (43714, 1024)
+Y_test.shape: (43714, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  English
+avg F1 =  0.5817664068944004
+acc =  0.6033993686233243
+-------------------------------------------------------------------
+Loading X_train.
+(1062108, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(97947,)
+(1062108,)
+len_train:  1062108
+len_test:  97947
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1111081, 1024)
+Y_train.shape: (1111081, 3)
+X_test.shape: (48974, 1024)
+Y_test.shape: (48974, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  German
+avg F1 =  0.5207370531284135
+acc =  0.5941519990198881
+-------------------------------------------------------------------
+Loading X_train.
+(1102751, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(57304,)
+(1102751,)
+len_train:  1102751
+len_test:  57304
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1131403, 1024)
+Y_train.shape: (1131403, 3)
+X_test.shape: (28652, 1024)
+Y_test.shape: (28652, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Hungarian
+avg F1 =  0.5911224931478443
+acc =  0.6102889850621248
+-------------------------------------------------------------------
+Loading X_train.
+(968126, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(191929,)
+(968126,)
+len_train:  968126
+len_test:  191929
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1064090, 1024)
+Y_train.shape: (1064090, 3)
+X_test.shape: (95965, 1024)
+Y_test.shape: (95965, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Polish
+avg F1 =  0.6665060538941103
+acc =  0.630333975928724
+-------------------------------------------------------------------
+Loading X_train.
+(1008013, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(152042,)
+(1008013,)
+len_train:  1008013
+len_test:  152042
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1084034, 1024)
+Y_train.shape: (1084034, 3)
+X_test.shape: (76021, 1024)
+Y_test.shape: (76021, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Portuguese
+avg F1 =  0.43574590598943386
+acc =  0.38870838320990253
+-------------------------------------------------------------------
+Loading X_train.
+(1066735, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(93320,)
+(1066735,)
+len_train:  1066735
+len_test:  93320
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1113395, 1024)
+Y_train.shape: (1113395, 3)
+X_test.shape: (46660, 1024)
+Y_test.shape: (46660, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Russian
+avg F1 =  0.6646711726699168
+acc =  0.6382126018002572
+-------------------------------------------------------------------
+Loading X_train.
+(1088335, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(71720,)
+(1088335,)
+len_train:  1088335
+len_test:  71720
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1124195, 1024)
+Y_train.shape: (1124195, 3)
+X_test.shape: (35860, 1024)
+Y_test.shape: (35860, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Slovak', 'Slovenian', 'Swedish']
+Evaluatng on language:  Serbian
+avg F1 =  0.5227561213015528
+acc =  0.4878973786949247
+-------------------------------------------------------------------
+Loading X_train.
+(1101286, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (112830,)
+Shape y_text:  (51397,)
+(58769,)
+(1101286,)
+len_train:  1101286
+len_test:  58769
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1130670, 1024)
+Y_train.shape: (1130670, 3)
+X_test.shape: (29385, 1024)
+Y_test.shape: (29385, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovenian', 'Swedish']
+Evaluatng on language:  Slovak
+avg F1 =  0.6394795280871082
+acc =  0.6056491407180534
+-------------------------------------------------------------------
+Loading X_train.
+(1047225, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (51397,)
+(112830,)
+(1047225,)
+len_train:  1047225
+len_test:  112830
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1103640, 1024)
+Y_train.shape: (1103640, 3)
+X_test.shape: (56415, 1024)
+Y_test.shape: (56415, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Swedish']
+Evaluatng on language:  Slovenian
+avg F1 =  0.5414486345249918
+acc =  0.5004342816626783
+-------------------------------------------------------------------
+Loading X_train.
+(1108658, 1024)
+Loading X_test.
+Loading Y_train and Y_test.
+Shape y_text:  (38104,)
+Shape y_text:  (63266,)
+Shape y_text:  (84000,)
+Shape y_text:  (87427,)
+Shape y_text:  (97947,)
+Shape y_text:  (57304,)
+Shape y_text:  (191929,)
+Shape y_text:  (152042,)
+Shape y_text:  (93320,)
+Shape y_text:  (71720,)
+Shape y_text:  (58769,)
+Shape y_text:  (112830,)
+(51397,)
+(1108658,)
+len_train:  1108658
+len_test:  51397
+(1160055,)
+{'Negative': 0, 'Neutral': 1, 'Positive': 2}
+X_train.shape: (1134356, 1024)
+Y_train.shape: (1134356, 3)
+X_test.shape: (25699, 1024)
+Y_test.shape: (25699, 3)
+Training on languages:  ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian']
+Evaluatng on language:  Swedish
+avg F1 =  0.6311132068273786
+acc =  0.5913070547492121
+-------------------------------------------------------------------
