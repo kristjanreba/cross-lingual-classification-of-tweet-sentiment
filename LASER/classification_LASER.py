@@ -184,6 +184,18 @@ def experiment(train_lang, test_lang, use_test_lang=False):
 
 if __name__ == "__main__":
 
+    '''
+    Dodatni eksperimenti z LASER za preverjanje lastne hipoteze:
+
+    
+
+
+
+
+    '''
+
+
+
     languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
 
     '''
@@ -261,7 +273,7 @@ if __name__ == "__main__":
     experiment(train_lang, test_lang)
     '''
 
-
+    '''
 
     # Experiments for many language train set. Also use the test set.
     print("\n\nMIXED LANGUAGES and sizes\n\n")
@@ -292,3 +304,5 @@ if __name__ == "__main__":
         train_lang.remove(lang)
         test_lang = lang
         experiment(train_lang, test_lang, use_test_lang=True)
+
+    '''
