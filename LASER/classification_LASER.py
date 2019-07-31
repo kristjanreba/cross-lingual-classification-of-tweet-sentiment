@@ -184,15 +184,34 @@ def experiment(train_lang, test_lang, use_test_lang=False):
 
 if __name__ == "__main__":
 
-    '''
-    Dodatni eksperimenti z LASER za preverjanje lastne hipoteze:
 
-    
+    # Experiments for testing the hypothesis of bad datasets
+    print("\n\nHYPOTHESIS TESTING\n\n")
 
+    #train_lang = ['Slovak'] # has to be a list of strings (languages)
+    #test_lang = 'English' # has to be a signle string
+    #experiment(train_lang, test_lang, use_test_lang=True)
 
+    train_lang = ['Slovak'] # has to be a list of strings (languages)
+    test_lang = 'Russian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
 
+    #train_lang = ['Slovak'] # has to be a list of strings (languages)
+    #test_lang = 'Slovak' # has to be a signle string
+    #experiment(train_lang, test_lang, use_test_lang=True)
 
-    '''
+    train_lang = ['Slovak'] # has to be a list of strings (languages)
+    test_lang = 'Polish' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
+
+    train_lang = ['Slovak'] # has to be a list of strings (languages)
+    test_lang = 'Slovenian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
+
+    train_lang = ['Slovak'] # has to be a list of strings (languages)
+    test_lang = 'Bulgarian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
+
 
 
 
