@@ -89,9 +89,9 @@ def load_data(train_lang, test_lang, use_test_lang):
 
     # if we use the test language training option than we have to adjust how the dataset is split
     if use_test_lang:
-        X_train = np.vstack([X_train, X_test[:len_test//2,:]])
-        X_test = X_test[len_test//2:,:]
-        len_train += len_test // 2
+        X_train = np.vstack([X_train, X_test[:int(len_test*0.7),:]])
+        X_test = X_test[int(len_test*0.7):,:]
+        len_train += int(len_test*0.7)
 
     # split encoded labels back to train and test
     Y_train = Y_one_hot[:len_train,:]
@@ -184,7 +184,20 @@ def experiment(train_lang, test_lang, use_test_lang=False):
 
 if __name__ == "__main__":
 
+    train_lang = ['Slovak'] # has to be a list of strings (languages)
+    test_lang = 'Bosnian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
 
+    train_lang = ['Bosnian'] # has to be a list of strings (languages)
+    test_lang = 'Serbian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
+
+    train_lang = ['Serbian'] # has to be a list of strings (languages)
+    test_lang = 'Slovenian' # has to be a signle string
+    experiment(train_lang, test_lang, use_test_lang=True)
+
+
+    '''
     # Experiments for testing the hypothesis of bad datasets
     print("\n\nHYPOTHESIS TESTING\n\n")
 
@@ -211,7 +224,7 @@ if __name__ == "__main__":
     train_lang = ['Slovak'] # has to be a list of strings (languages)
     test_lang = 'Bulgarian' # has to be a signle string
     experiment(train_lang, test_lang, use_test_lang=True)
-
+    '''
 
 
 
