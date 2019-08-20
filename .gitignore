@@ -1,4 +1,8 @@
 .DS_Store
-data/
+.gitignore
 .ipynb_checkpoints/
 twitter_api_keys.txt
+data/clean_dataset/
+data/embedded_dataset_LASER/
+data/missing_data/
+data/original_dataset/
