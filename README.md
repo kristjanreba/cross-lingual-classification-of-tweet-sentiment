@@ -15,3 +15,6 @@ In the *LASER* folder there is a python script called *embed_all.py* that create
 The folder also contains file *classification_LASER.py* where experiments with LASER+ML are defined.
 
 In the *data* folder there is a folder *twitter_sentiment* containing twitt IDs with coresponding hand labels. We can use those IDs to download the twitts using *download_twitts.py*.
+
+
+Code might need some adjustment depending on what experiments you want to run, what data you want to use and what platform you are using.
