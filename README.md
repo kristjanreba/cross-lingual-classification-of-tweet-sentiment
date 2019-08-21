@@ -3,7 +3,7 @@
 In this repository you can find the code that was used to run experiments for my diploma thesis.
 
 
-*BERT.ipynb* - contains the code for evaluation of multilingual BERT model. For the code to run we have to provide the data (read the file). It is recommended to run the experiments on you own machine using the GPU.
+*BERT.ipynb* - contains the code for evaluation of multilingual BERT model. For the code to run we have to provide the data (read the file). It is recommended to run the experiments on your own machine using a GPU.
 
 *separate.py* - additional script that separates text from labels into separate files.
 
