@@ -55,13 +55,13 @@ def clean(lang):
     cleaned.to_csv(clean_file)
 
 
-
-'''
-Merge with sentiment and clean for languages in list
-'''
-languages = ['Albanian', 'Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Spanish', 'Swedish']
-for lang in languages:
-    #print('Merging Tweets in {}'.format(lang))
-    #merge(lang)
-    print('Cleaning Tweets in {}'.format(lang))
-    clean(lang)
+if __name__ == '__main__':
+    '''
+    Merge with sentiment and clean for languages in list
+    '''
+    languages = ['Albanian', 'Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Spanish', 'Swedish']
+    for lang in languages:
+        #print('Merging Tweets in {}'.format(lang))
+        #merge(lang)
+        print('Cleaning Tweets in {}'.format(lang))
+        clean(lang)

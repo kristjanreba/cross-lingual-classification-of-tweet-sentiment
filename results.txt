@@ -1,0 +1,54 @@
+
+experiments_same_fam
+['Serbian'] Slovenian acc:0.583043, f1:0.54
+['Croatian'] Slovenian acc:0.541241, f1:0.53
+['Slovenian'] Croatian acc:0.647593, f1:0.69
+['Croatian'] Serbian acc:0.521984, f1:0.54
+['Croatian'] Bosnian acc:0.605756, f1:0.67
+['Serbian'] Croatian acc:0.626245, f1:0.67
+['Serbian'] Bosnian acc:0.597533, f1:0.63
+['Polish'] Slovenian acc:0.510753, f1:0.52
+['Slovak'] Slovenian acc:0.503870, f1:0.53
+['English'] German acc:0.601191, f1:0.48
+
+experiments_diff_lang_fam
+['German'] Slovenian acc:0.558789, f1:0.54
+['English'] Slovenian acc:0.573028, f1:0.54
+['Swedish'] Slovenian acc:0.559114, f1:0.54
+['Hungarian'] Slovenian acc:0.524638, f1:0.52
+['Portuguese'] Slovenian acc:0.489040, f1:0.51
+
+experiments_large_train_dataset
+['English', 'Croatian', 'Slovenian'] Slovenian acc:0.559143, f1:0.55
+['Croatian', 'Serbian', 'Bosnian'] Slovenian acc:0.579616, f1:0.54
+['English', 'Swedish'] German acc:0.599013, f1:0.48
+
+majority classifier accuracy
+Albanian acc:0.5164237165898113
+Bosnian acc:0.359804744908671
+Bulgarian acc:0.4577498182278001
+Croatian acc:0.5225357142857143
+English acc:0.4398755533187688
+German acc:0.5325839484619233
+Hungarian acc:0.5306610358788217
+Polish acc:0.43893314715337445
+Portuguese acc:0.36837189723892083
+Russian acc:0.4007822546078011
+Serbian acc:0.42803959843837147
+Slovak acc:0.5206316255168542
+Slovenian acc:0.4294653065203712
+Swedish acc:0.43543397474560774
+
+experiments_same_fam
+['English'] German acc:0.609222, f1:0.48
+['Serbian'] Slovenian acc:0.565524, f1:0.54
+['Serbian'] Croatian acc:0.635887, f1:0.67
+['Serbian'] Bosnian acc:0.607068, f1:0.65
+['Polish'] Slovenian acc:0.484904, f1:0.51
+['Slovak'] Slovenian acc:0.509394, f1:0.52
+['Croatian'] Slovenian acc:0.526204, f1:0.53
+['Croatian'] Serbian acc:0.524122, f1:0.54
+['Croatian'] Bosnian acc:0.605056, f1:0.66
+['Slovenian'] Croatian acc:0.651998, f1:0.70
+['Slovenian'] Serbian acc:0.547035, f1:0.52
+['Slovenian'] Bosnian acc:0.607418, f1:0.66

@@ -2,6 +2,10 @@
 
 In this repository you can find the code that was used to run experiments for my diploma thesis.
 
+### Install:
+```
+conda install numpy pandas scikit-learn
+```
 
 *BERT.ipynb* - contains the code for evaluation of multilingual BERT model. For the code to run we have to provide the data (read the file). It is recommended to run the experiments on your own machine using a GPU.
 
