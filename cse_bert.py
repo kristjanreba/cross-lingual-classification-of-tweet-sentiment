@@ -7,20 +7,21 @@ Original file is located at
     https://colab.research.google.com/drive/1a0xAe44WFTPpOhY233DJJ39IunnyYphf
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
+#from google.colab import drive
+#drive.mount('/content/drive')
 
-!pip install simpletransformers
+#!pip install simpletransformers
 
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 
 import pandas as pd
 import logging
+import statistics
 
 import pandas as pd
 import numpy as np
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import f1_score, accuracy_score, precision_recall_fscore_support
 
@@ -28,7 +29,8 @@ DATA_COLUMN = 'Text'
 LABEL_COLUMN = 'HandLabels'
 label_list = ['Positive', 'Negative', 'Neutral']
 
-path = '/content/drive/My Drive/clean/'
+path ='data/clean/'
+#path = '/content/drive/My Drive/clean/'
 languages = ['Hungarian', 'Portuguese', 'Bosnian',
              'Croatian', 'Polish', 'Russian',
              'Serbian', 'Slovak', 'Slovenian',
@@ -42,6 +44,17 @@ def to_number(text_labels):
         elif l == 'Negative': n = 2
         labels.append(n)
     return labels
+
+
+def load_single_lang(lang):
+    df = pd.read_csv(path + lang + '.csv')
+    df.drop('Unnamed: 0', axis=1, inplace=True)
+    df.dropna(axis=0, inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    df['HandLabels'] = to_number(df['HandLabels'])
+    df.columns = ['text', 'labels']
+    return df
+
 
 def load_dataset(train_langs, test_langs, train_on_test_lang=False):
     
@@ -101,11 +114,11 @@ def avg_f1_score(y_true, y_pred):
 def eval(y_true, y_pred):
     acc = accuracy_score(y_true, y_pred)
     avg_f1 = avg_f1_score(y_true, y_pred)
-    return "acc:{} f1:{}".format(acc, avg_f1)
+    print("acc:{} f1:{}".format(acc, avg_f1))
+    return {"acc":acc, "avg_f1":avg_f1}
 
 def fit_and_evaluate(train_langs, test_lang):
     print(train_langs, test_lang)
-    #model_name = 'bert-base-multilingual-cased'
     model_name = 'EMBEDDIA/crosloengual-bert'
 
     logging.basicConfig(level=logging.INFO)
@@ -121,22 +134,30 @@ def fit_and_evaluate(train_langs, test_lang):
 
     # hyperparameters
     model_args = ClassificationArgs()
+    model_args.logging_steps = 1000000
+    model_args.save_eval_checkpoints = False
+    model_args.save_steps = 1000000
+    model_args.no_cache = True
+    model_args.save_model_every_epoch = False
+
     model_args.num_train_epochs = 1
-    model_args.learning_rate = 1e-4
+    model_args.learning_rate = 2e-4
     model_args.train_batch_size = 32
     model_args.overwrite_output_dir = True
+    '''
     model_args.train_custom_parameters_only = True
     model_args.custom_parameter_groups = [
         {
             "params": ["classifier.weight"],
-            "lr": 1e-4,
+            "lr": 2e-4,
         },
         {
             "params": ["classifier.bias"],
-            "lr": 1e-4,
+            "lr": 2e-4,
             "weight_decay": 0.0,
         },
     ]
+    '''
 
 
     # Create a ClassificationModel
@@ -153,11 +174,126 @@ def fit_and_evaluate(train_langs, test_lang):
     out = eval(df_test['labels'].values, predictions)
 
     # write results to file
-    with open('/content/drive/My Drive/results/results.txt', 'a+') as f:
+    with open('results_csebert.txt', 'a+') as f:
         f.write("{} {} {}\n".format(train_langs, test_lang, out))
 
+    del model
+
+def cross_validation(lang):
+    print(lang)
+    model_name = 'EMBEDDIA/crosloengual-bert'
+
+    logging.basicConfig(level=logging.INFO)
+    transformers_logger = logging.getLogger('transformers')
+    transformers_logger.setLevel(logging.WARNING)
+
+    # Train and Evaluation data needs to be in a Pandas Dataframe containing at least two columns.
+    # If the Dataframe has a header, it should contain a 'text' and a 'labels' column.
+    # If no header is present, the Dataframe should contain at least two columns,
+    # with the first column is the text with type str, and the second column in the label with type int.
+    accs = []
+    f1s = []
+    df = load_single_lang(lang)
+    
+
+    kf = KFold(n_splits=10)
+    for train_index, test_index in kf.split(df.index):
+        df_train = df.iloc[train_index]
+        df_test = df.iloc[test_index]
+
+        # hyperparameters
+        model_args = ClassificationArgs()
+        model_args.logging_steps = 1000000
+        model_args.save_eval_checkpoints = False
+        model_args.save_steps = 1000000
+        model_args.no_cache = True
+        model_args.save_model_every_epoch = False
+
+        model_args.num_train_epochs = 1
+        model_args.learning_rate = 2e-4
+        model_args.train_batch_size = 32
+        model_args.overwrite_output_dir = True
+        '''
+        model_args.train_custom_parameters_only = True
+        model_args.custom_parameter_groups = [
+            {
+                "params": ["classifier.weight"],
+                "lr": 2e-4,
+            },
+            {
+                "params": ["classifier.bias"],
+                "lr": 2e-4,
+                "weight_decay": 0.0,
+            },
+        ]
+        '''
+
+
+        # Create a ClassificationModel
+        model = ClassificationModel('bert', model_name, num_labels=3, args=model_args)
+        print(model.get_named_parameters())
+
+        # Train the model
+        print('Training ...')
+        model.train_model(df_train)
+
+        # Evaluate the model
+        print('Evaluating ...')
+        predictions, raw_outputs = model.predict(df_test['text'].values)
+        out = eval(df_test['labels'].values, predictions)
+        accs.append(out['acc'])
+        f1s.append(out['avg_f1'])
+        
+        del model
+
+    # write results to file
+    with open('results_csebert.txt', 'a+') as f:
+        f.write("{} {} {}\n".format(lang, statistics.mean(accs), statistics.mean(f1s)))
+
+
+
+
+
+languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+
+for lang in languages:
+    cross_validation(lang) 
+
+
+
+
+
+'''
+more_experiments = [
+    #(['English'], 'Slovenian'),
+    (['English'], 'Croatian'),
+    (['Slovenian'], 'English'),
+    #(['Slovenian'], 'Croatian'),
+    #(['Croatian'], 'Slovenian'),
+    (['Croatian'], 'English'),
+    (['Croatian', 'English'], 'Slovenian'),
+    (['Croatian', 'Slovenian'], 'English'),
+    (['English', 'Slovenian'], 'Croatian'),
+]
+
+
+for (train_langs, test_lang) in more_experiments:
+    fit_and_evaluate(train_langs, test_lang)
+
+'''
+
+
+'''
 experiments_same_fam = [
+    (['German'], 'English'),            
     (['English'], 'German'),
+    (['Polish'], 'Russian'),
+    (['Polish'], 'Slovak'),
+    (['German'], 'Swedish'),
+    (['German', 'Swedish'], 'English'),
+    (['Slovenian', 'Serbian'], 'Russian'),
+    (['Slovenian', 'Serbian'], 'Slovak'),
+
     (['Serbian'], 'Slovenian'),
     (['Serbian'], 'Croatian'),
     (['Serbian'], 'Bosnian'),
@@ -172,6 +308,13 @@ experiments_same_fam = [
 ]
 
 experiments_diff_lang_fam = [
+    (['Russian'], 'English'),
+    (['English'], 'Russian'),
+    (['English'], 'Slovak'),
+    (['Polish', 'Slovenian'], 'English'),
+    (['German', 'Swedish'], 'Russian'),
+    (['English', 'German'], 'Slovak'),                
+    
     (['German'], 'Slovenian'),
     (['English'], 'Slovenian'),
     (['Swedish'], 'Slovenian'),
@@ -180,9 +323,16 @@ experiments_diff_lang_fam = [
 ]
 
 experiments_large_train_dataset = [
+    (['English', 'Croatian'], 'Slovenian'),
+    (['English', 'Croatian', 'Serbian'], 'Slovak'),
+    (['Hungarian', 'Slovak', 'English', 'Croatian'], 'Russian'),
+    (['Russian', 'Swedish'], 'English'),
+
     (['Croatian', 'Serbian', 'Bosnian'], 'Slovenian'),
     (['English', 'Swedish'], 'German'),
 ]
+
+
 
 for (train_langs, test_lang) in experiments_same_fam:
     fit_and_evaluate(train_langs, test_lang)
@@ -192,4 +342,6 @@ for (train_langs, test_lang) in experiments_diff_lang_fam:
 
 for (train_langs, test_lang) in experiments_large_train_dataset:
     fit_and_evaluate(train_langs, test_lang)
+'''
+
 

@@ -11,11 +11,11 @@ Original file is located at
 This notebook assumes that the clean dataset is stored on google drive in "clean" folder.
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
+#from google.colab import drive
+#drive.mount('/content/drive')
 
-!pip install tensorflow==1.15.0
-!pip install bert-tensorflow==1.0.1
+#!pip install tensorflow==1.15.0
+#!pip install bert-tensorflow==1.0.1
 
 import pandas as pd
 import numpy as np
@@ -24,22 +24,30 @@ import tensorflow_hub as hub
 import io
 
 from datetime import datetime
+import statistics
 
 import bert
 from bert import run_classifier
 from bert import optimization
 from bert import tokenization
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold, KFold
 from sklearn.metrics import f1_score, accuracy_score
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
+from tensorflow.python.client import device_lib 
+print(device_lib.list_local_devices())
+
+
+
+
 # Set the output directory for saving model file
 
-OUTPUT_DIR = 'output'#@param {type:"string"}
-tf.gfile.MakeDirs(OUTPUT_DIR)
-print('Model output directory: {}'.format(OUTPUT_DIR))
+#OUTPUT_DIR = 'output'#@param {type:"string"}
+#tf.gfile.MakeDirs(OUTPUT_DIR)
+#print('Model output directory: {}'.format(OUTPUT_DIR))
+OUTPUT_DIR = 'tmp_mbert/'
 
 """#Data"""
 
@@ -47,13 +55,43 @@ DATA_COLUMN = 'Text'
 LABEL_COLUMN = 'HandLabels'
 label_list = ['Positive', 'Negative', 'Neutral']
 
-path = '/content/drive/My Drive/clean/'
+path = 'data/clean/'
+#path = '/content/drive/My Drive/clean/'
 languages = ['Hungarian', 'Portuguese', 'Bosnian',
              'Croatian', 'Polish', 'Russian',
              'Serbian', 'Slovak', 'Slovenian',
              'English', 'German', 'Swedish']
 
-def load_dataset(train_langs, test_langs, train_on_test_lang=True):
+def cross_validation(lang):
+    accs = []
+    df = pd.read_csv(path + lang + '.csv')
+
+    df.drop('Unnamed: 0', axis=1, inplace=True)
+    df.dropna(axis=0, inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
+    kf = KFold(n_splits=10)
+    for train_ix, test_ix in kf.split(df.index):
+        train = df.iloc[train_ix]
+        test = df.iloc[test_ix]
+        fit_and_evaluate(train, test)
+
+
+def load_single_lang(lang):
+    df = pd.read_csv(path + lang + '.csv')
+
+    df.drop('Unnamed: 0', axis=1, inplace=True)
+    df.dropna(axis=0, inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
+    train_ix, test_ix = train_test_split(df.index, test_size=0.3)
+    train = df.iloc[train_ix]
+    test = df.iloc[test_ix]
+
+    return train, test
+
+
+def load_dataset(train_langs, test_lang, train_on_test_lang=True):
     
     # Load train languages
     df_train = pd.DataFrame()
@@ -190,7 +228,7 @@ def model_fn_builder(num_labels, learning_rate, num_train_steps, num_warmup_step
 
 BATCH_SIZE = 32
 LEARNING_RATE = 2e-5
-NUM_TRAIN_EPOCHS = 1.0
+NUM_TRAIN_EPOCHS = 2.0
 WARMUP_PROPORTION = 0.1
 # Model configs
 SAVE_CHECKPOINTS_STEPS = 10000
@@ -259,19 +297,20 @@ def fit_and_evaluate(train, test):
     
     results = estimator.evaluate(input_fn=test_input_fn, steps=None)
     print(results)
-    with open('/content/drive/My Drive/results/results.txt', 'a+') as f:
+    #with open('/content/drive/My Drive/results/results.txt', 'a+') as f:
+    with open('results_mbert.txt', 'a+') as f:
         f.write("{}\n".format(results))
 
 experiments_same_fam = [
-    (['German'], 'English'),            
-    (['English'], 'German'),
-    (['Polish'], 'Russian'),
-    (['Polish'], 'Slovak'),
-    (['German'], 'Swedish'),
-    (['German', 'Swedish'], 'English'),
-    (['Slovenian', 'Serbian'], 'Russian'),
-    (['Slovenian', 'Serbian'], 'Slovak'),
-
+#    (['German'], 'English'),            
+#    (['English'], 'German'),
+#    (['Polish'], 'Russian'),
+#    (['Polish'], 'Slovak'),
+#    (['German'], 'Swedish'),
+#    (['German', 'Swedish'], 'English'),
+#    (['Slovenian', 'Serbian'], 'Russian'),
+#    (['Slovenian', 'Serbian'], 'Slovak'),
+'''
     (['Serbian'], 'Slovenian'),
     (['Serbian'], 'Croatian'),
     (['Serbian'], 'Bosnian'),
@@ -283,50 +322,106 @@ experiments_same_fam = [
     (['Slovenian'], 'Croatian'),
     (['Slovenian'], 'Serbian'),
     (['Slovenian'], 'Bosnian'),
+'''
+    
 ]
 
 experiments_diff_lang_fam = [
-    (['Russian'], 'English'),
-    (['English'], 'Russian'),
-    (['English'], 'Slovak'),
-    (['Polish', 'Slovenian'], 'English'),
-    (['German', 'Swedish'], 'Russian'),
-    (['English', 'German'], 'Slovak'),                
+#    (['Russian'], 'English'),
+#    (['English'], 'Russian'),
+#    (['English'], 'Slovak'),
+#    (['Polish', 'Slovenian'], 'English'),
+#    (['German', 'Swedish'], 'Russian'),
+#    (['English', 'German'], 'Slovak'),                
     
-    (['German'], 'Slovenian'),
-    (['English'], 'Slovenian'),
-    (['Swedish'], 'Slovenian'),
-    (['Hungarian'], 'Slovenian'),
-    (['Portuguese'], 'Slovenian'),
+   # (['German'], 'Slovenian'),
+   # (['English'], 'Slovenian'),
+   # (['Swedish'], 'Slovenian'),
+   # (['Hungarian'], 'Slovenian'),
+   # (['Portuguese'], 'Slovenian'),
 ]
 
 experiments_large_train_dataset = [
-    (['English', 'Croatian'], 'Slovenian'),
-    (['English', 'Croatian', 'Serbian'], 'Slovak'),
-    (['Hungarian', 'Slovak', 'English', 'Croatian'], 'Russian'),
-    (['Russian', 'Swedish'], 'English'),
+   # (['English', 'Croatian'], 'Slovenian'),
+   # (['English', 'Croatian', 'Serbian'], 'Slovak'),
+   # (['Hungarian', 'Slovak', 'English', 'Croatian'], 'Russian'),
+   # (['Russian', 'Swedish'], 'English'),
 
-    (['Croatian', 'Serbian', 'Bosnian'], 'Slovenian'),
-    (['English', 'Swedish'], 'German'),
+   # (['Croatian', 'Serbian', 'Bosnian'], 'Slovenian'),
+   # (['English', 'Swedish'], 'German'),
 ]
 
+languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+
+
+'''
+# More experiments
+more_experiments = [
+    #(['English'], 'Slovenian'),
+    (['English'], 'Croatian'),
+    (['Slovenian'], 'English'),
+    #(['Slovenian'], 'Croatian'),
+    #(['Croatian'], 'Slovenian'),
+    (['Croatian'], 'English'),
+    (['Croatian', 'English'], 'Slovenian'),
+    (['Croatian', 'Slovenian'], 'English'),
+    (['English', 'Slovenian'], 'Croatian'),
+]
+'''
+
+for lang in languages:
+    with open('results_mbert.txt', 'a+') as f:
+        f.write("{} \n".format(lang))
+    cross_validation(lang)
+     
+
+'''
+
+for (train_langs, test_lang) in more_experiments:
+    with open('results_mbert.txt', 'a+') as f:
+        f.write("{} {} \n".format(train_langs, test_lang))
+    print(train_langs, test_lang)
+    df_train, df_test = load_dataset(train_langs, test_lang)
+    fit_and_evaluate(df_train, df_test)
+
+
+for lang in languages:
+    with open('results_mbert.txt','a+') as f:
+        f.write("{} \n".format(lang))
+    print(lang)
+    df_train, df_test = load_single_lang(lang)
+    fit_and_evaluate(df_train, df_test)
+
+for lang in languages:
+    with open('results_mbert.txt','a+') as f:
+        f.write("Large dataset pretraining {} \n".format(lang))
+    print(lang)
+    train_langs = list(languages)
+    train_langs.remove(lang)
+    df_train, df_test = load_dataset(train_langs, lang)
+    fit_and_evaluate(df_train, df_test)
+
 for (train_langs, test_lang) in experiments_same_fam:
-    with open('/content/drive/My Drive/results/results_mbert.txt', 'a+') as f:
+    with open('results_mbert.txt', 'a+') as f:
         f.write("{} {} \n".format(train_langs, test_lang))
     print(train_langs, test_lang)
     df_train, df_test = load_dataset(train_langs, test_lang)
     fit_and_evaluate(df_train, df_test)
 
 for (train_langs, test_lang) in experiments_diff_lang_fam:
-    with open('/content/drive/My Drive/results/results_mbert.txt', 'a+') as f:
+    with open('results_mbert.txt', 'a+') as f:
         f.write("{} {} \n".format(train_langs, test_lang))
     print(train_langs, test_lang)
     df_train, df_test = load_dataset(train_langs, test_lang)
     fit_and_evaluate(df_train, df_test)
 
 for (train_langs, test_lang) in experiments_large_train_dataset:
-    with open('/content/drive/My Drive/results/results_mbert.txt', 'a+') as f:
+    with open('results_mbert.txt', 'a+') as f:
         f.write("{} {} \n".format(train_langs, test_lang))
     print(train_langs, test_lang)
     df_train, df_test = load_dataset(train_langs, test_lang)
     fit_and_evaluate(df_train, df_test)
+
+
+
+'''
