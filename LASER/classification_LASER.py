@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold, KFold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import f1_score, accuracy_score
 from sklearn.utils import shuffle
@@ -11,6 +11,7 @@ from keras.layers import Dense
 from keras.utils import np_utils
 
 from collections import Counter
+import statistics
 
 
 #-------------------------------------------------------------------------------
@@ -18,6 +19,45 @@ dim = 1024
 epochs = 10
 batch_size = 32
 
+def cross_validation(lang):
+    accs = []
+    f1s = []
+    X, y, encoder_dict = load_single_cv(lang)
+
+    kf = KFold(n_splits=10)
+    for train_index, test_index in kf.split(X, y):
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        # convert integers to one hot encoded
+        Y_train = np_utils.to_categorical(y_train, num_classes=3)
+        Y_test = np_utils.to_categorical(y_test, num_classes=3)
+
+        # create model
+        model = create_model()
+
+        # train Classifier
+        model.fit(X_train, Y_train, epochs=epochs, batch_size=batch_size, verbose=0)
+
+        # make predictions
+        Y_pred = model.predict(X_test)
+
+        # convert from one-hot encoding
+        y_pred = np.argmax(Y_pred, axis=1)
+        y_true = np.argmax(Y_test, axis=1)
+
+        avg_f1 = avg_f1_score(y_true, y_pred, encoder_dict)
+        acc = accuracy_score(y_true, y_pred)
+
+        accs.append(acc)
+        f1s.append(avg_f1)
+    
+    # evaluate classifier
+    print('Language: ', lang)
+    #print('avg F1 = ', avg_f1_score(y_true, y_pred, encoder_dict))
+    #print('acc = ', accuracy_score(y_true, y_pred))
+    #print('-------------------------------------------------------------------')
+    return statistics.mean(accs), statistics.mean(f1s)
 
 def get_X(lang):
     X = np.fromfile('../data/embed/{}.raw'.format(lang), dtype=np.float32, count=-1)
@@ -143,6 +183,37 @@ def load_single(lang):
     #print('Y_test.shape:', Y_test.shape)
     return X_train, Y_train, X_test, Y_test, encoder_dict
 
+def load_single_cv(lang):
+    X = np.fromfile('../data/embed/{}.raw'.format(lang), dtype=np.float32, count=-1)
+    X.resize(X.shape[0] // dim, dim)
+    X = X[1:,:]
+    #print('Language: ', lang)
+    #print('Shape X: ', X.shape)
+
+    # read the hand labels for a language
+    df = pd.read_csv('../data/clean/labels/{}.csv'.format(lang))
+    y_text = df.values
+    y_text = np.ravel(y_text)
+    #print('Shape y_text: ', y_text.shape)
+
+    # encode class names as integers
+    encoder = LabelEncoder()
+    encoder.fit(y_text)
+    encoded_Y = encoder.transform(y_text)
+    # create dictionary for mapping
+    encoder_dict = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
+
+    
+    #print('Shape Y_train: ', Y_one_hot.shape)
+
+    #X_train, X_test, Y_train, Y_test = train_test_split(X, Y_one_hot, test_size=0.3, random_state=1)
+
+    #print('X_train.shape:', X_train.shape)
+    #print('Y_train.shape:', Y_train.shape)
+    #print('X_test.shape:', X_test.shape)
+    #print('Y_test.shape:', Y_test.shape)
+    return X, encoded_Y, encoder_dict
+
 def experiment_single_lang(lang):
     # load data
     X_train, Y_train, X_test, Y_test, encoder_dict = load_single(lang)
@@ -206,8 +277,10 @@ if __name__ == "__main__":
 
     results_file = '../results.txt'
 
-    languages = ['Albanian', 'Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+    #languages = ['Bosnian', 'Bulgarian', 'Croatian', 'English', 'German', 'Hungarian', 'Polish', 'Portuguese', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Swedish']
+    languages = ['Serbian', 'Slovak', 'Slovenian', 'Swedish']
 
+    '''
     experiments_same_fam = [
         (['English'], 'German'),
         (['Serbian'], 'Slovenian'),
@@ -236,7 +309,34 @@ if __name__ == "__main__":
         (['English', 'Swedish'], 'German'),
     ]
 
+    more_experiments = [
+        #(['English'], 'Slovenian'),
+        (['English'], 'Croatian'),
+        (['Slovenian'], 'English'),
+        #(['Slovenian'], 'Croatian'),
+        #(['Croatian'], 'Slovenian'),
+        (['Croatian'], 'English'),
+        (['Croatian', 'English'], 'Slovenian'),
+        (['Croatian', 'Slovenian'], 'English'),
+        (['English', 'Slovenian'], 'Croatian'),
+    ]
+
     with open(results_file, 'a+') as f:
+
+        f.write('\nMore experiments\n')
+        for train_langs, test_lang in more_experiments:
+            acc, f1 = experiment(train_langs, test_lang, use_test_lang=True)
+            f.write("{} {} acc:{:.2f}, f1:{:.2f}\n".format(train_langs, test_lang, acc, f1))
+    '''
+
+    with open(results_file, 'a+') as f:
+
+        f.write('\nCV single language experiments\n')
+        for lang in languages:
+            print(lang)
+            acc, f1 = cross_validation(lang)
+            f.write("{} acc:{:.2f}, f1:{:.2f}\n".format(lang, acc, f1))
+
 
         '''
         f.write('\nmajority classifier accuracy\n')

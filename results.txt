@@ -52,3 +52,38 @@ experiments_same_fam
 ['Slovenian'] Croatian acc:0.651998, f1:0.70
 ['Slovenian'] Serbian acc:0.547035, f1:0.52
 ['Slovenian'] Bosnian acc:0.607418, f1:0.66
+
+More experiments
+['English'] Croatian acc:0.62, f1:0.67
+['Slovenian'] English acc:0.63, f1:0.64
+['Croatian'] English acc:0.63, f1:0.63
+['Croatian', 'English'] Slovenian acc:0.54, f1:0.54
+['Croatian', 'Slovenian'] English acc:0.62, f1:0.61
+['English', 'Slovenian'] Croatian acc:0.64, f1:0.68
+
+
+CV single language experiments Stratified CV
+Bosnian acc:0.64, f1:0.68
+Bulgarian acc:0.59, f1:0.54
+Croatian acc:0.68, f1:0.73
+English acc:0.65, f1:0.62
+German acc:0.64, f1:0.53
+Hungarian acc:0.67, f1:0.64
+Polish acc:0.65, f1:0.70
+Portuguese acc:0.49, f1:0.51
+
+CV single language experiments Blocked CV
+Bosnian acc:0.64, f1:0.68
+Bulgarian acc:0.59, f1:0.53
+Croatian acc:0.68, f1:0.72
+English acc:0.65, f1:0.62
+German acc:0.64, f1:0.52
+Hungarian acc:0.67, f1:0.63
+Polish acc:0.66, f1:0.70
+Portuguese acc:0.47, f1:0.48
+
+CV single language experiments Blocked CV
+Serbian acc:0.54, f1:0.50
+Slovak acc:0.72, f1:0.72
+Slovenian acc:0.58, f1:0.57
+Swedish acc:0.64, f1:0.67
